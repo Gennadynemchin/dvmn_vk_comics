@@ -1,5 +1,6 @@
 import requests
 import os
+from dotenv import load_dotenv
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -21,4 +22,41 @@ def get_comicbook(number_of_comics, folder='Files'):
     return comicbook_comment
 
 
-get_comicbook(353)
+def vk_get_groups(access_token):
+    url = f'https://api.vk.com/method/groups.get'
+    params = {'access_token': access_token, 'v': '5.131'}
+    response = requests.get(url, params=params)  # get json from xkcd.com
+    response.raise_for_status()
+    user_groups = response.json()
+    return user_groups
+
+
+def get_upload_address(access_token, group_id):
+    url = f'https://api.vk.com/method/photos.getWallUploadServer'
+    params = {'access_token': access_token, 'group_id': group_id, 'v': '5.131'}
+    response = requests.get(url, params=params)  # get json from xkcd.com
+    response.raise_for_status()
+    upload_address = response.json()['response']['upload_url']
+    return upload_address
+
+
+def upload_photo_to_server(url_for_upload, photo):
+    with open(photo, 'rb') as file:
+        files = {'photo': file}
+        response = requests.post(url_for_upload, files=files)
+        response.raise_for_status()
+        return response.json()
+
+
+def main():
+    load_dotenv()
+    vk_token = os.getenv('VK_USER_TOKEN')
+    vk_group_id = os.getenv('VK_GROUP_ID')
+    # get_comicbook(353)
+    print(vk_get_groups(vk_token))
+    url_for_upload = get_upload_address(vk_token, vk_group_id)
+    print(upload_photo_to_server(url_for_upload, 'Files/python.png'))
+
+
+if __name__ == '__main__':
+    main()
