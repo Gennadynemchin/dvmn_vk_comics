@@ -2,3 +2,4 @@ venv
 Files/
 .env
 .idea
+.DS_Store
