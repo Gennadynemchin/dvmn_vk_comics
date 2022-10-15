@@ -22,7 +22,7 @@ def get_comicbook(number_of_comics, folder='Files'):
     return comicbook_comment
 
 
-def vk_get_groups(access_token):
+def vk_get_groups(access_token):  # get array with groups of user
     url = f'https://api.vk.com/method/groups.get'
     params = {'access_token': access_token, 'v': '5.131'}
     response = requests.get(url, params=params)  # get json from xkcd.com
@@ -31,7 +31,7 @@ def vk_get_groups(access_token):
     return user_groups
 
 
-def get_upload_address(access_token, group_id):
+def get_upload_address(access_token, group_id):  # get url for upload photo to server
     url = f'https://api.vk.com/method/photos.getWallUploadServer'
     params = {'access_token': access_token, 'group_id': group_id, 'v': '5.131'}
     response = requests.get(url, params=params)
@@ -48,16 +48,29 @@ def upload_photo_to_server(url_for_upload, group_id, photo, access_token):
         upload_to_server = response.json()
         server = upload_to_server['server']
         photo = upload_to_server['photo']
-        hash = upload_to_server['hash']
+        hash_photo = upload_to_server['hash']
         url = 'https://api.vk.com/method/photos.saveWallPhoto'
         response = requests.post(url, {'access_token': access_token,
                                        'group_id': group_id,
                                        'server': server,
                                        'photo': photo,
-                                       'hash': hash,
+                                       'hash': hash_photo,
                                        'v': '5.131'})
         response.raise_for_status()
         return response.json()
+
+
+def wall_post(group_id, owner_id, media_id, message, access_token):
+    attachments = f'photo{owner_id}_{media_id}'
+    url = 'https://api.vk.com/method/wall.post'
+    response = requests.post(url, {'from_group': 1,
+                                   'owner_id': group_id,
+                                   'v': '5.131',
+                                   'access_token': access_token,
+                                   'message': message,
+                                   'attachments': attachments})
+    response.raise_for_status()
+    return response.json()
 
 
 def main():
@@ -66,8 +79,10 @@ def main():
     vk_group_id = os.getenv('VK_GROUP_ID')
     # get_comicbook(353)
     url_for_upload = get_upload_address(vk_token, vk_group_id)
-    print(url_for_upload)
-    print(upload_photo_to_server(url_for_upload, vk_group_id, 'Files/python.png', vk_token))
+    upload = upload_photo_to_server(url_for_upload, vk_group_id, 'Files/python.png', vk_token)
+    upload
+    group_id, owner_id, media_id, message = f'-{vk_group_id}', upload['response'][0]['owner_id'], upload['response'][0]['id'], 'test2'
+    print(wall_post(group_id, owner_id, media_id, message, vk_token))
 
 
 if __name__ == '__main__':
