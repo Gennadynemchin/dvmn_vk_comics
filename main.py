@@ -1,3 +1,4 @@
+import random
 import requests
 import os
 from dotenv import load_dotenv
@@ -19,7 +20,16 @@ def get_comicbook(number_of_comics, folder='Files'):
 
     with open(f'{folder}/{filename}', 'wb') as file:  # writing the comics to directory
         file.write(response_comicbook.content)
-    return comicbook_comment
+    return {'comicbook_comment': comicbook_comment, 'filename': filename}
+
+
+def get_random_cb_number():
+    url = 'https://xkcd.com/info.0.json'
+    response = requests.get(url)
+    response.raise_for_status()
+    max_cb_number = response.json()['num']
+    random_number = random.randint(1, max_cb_number)
+    return random_number
 
 
 def vk_get_groups(access_token):  # get array with groups of user
@@ -77,13 +87,13 @@ def main():
     load_dotenv()
     vk_token = os.getenv('VK_USER_TOKEN')
     vk_group_id = os.getenv('VK_GROUP_ID')
-    comment_for_comicbook = get_comicbook(353)
+    random_comicbook = get_comicbook(get_random_cb_number())
     url_for_upload = get_upload_address(vk_token, vk_group_id)
-    upload = upload_photo_to_server(url_for_upload, vk_group_id, 'Files/python.png', vk_token)
+    upload = upload_photo_to_server(url_for_upload, vk_group_id, f'Files/{random_comicbook["filename"]}', vk_token)
     group_id = f'-{vk_group_id}'
     owner_id = upload['response'][0]['owner_id']
     media_id = upload['response'][0]['id']
-    message = comment_for_comicbook
+    message = random_comicbook['comicbook_comment']
     wall_post(group_id, owner_id, media_id, message, vk_token)
 
 
