@@ -77,11 +77,12 @@ def main():
     load_dotenv()
     vk_token = os.getenv('VK_USER_TOKEN')
     vk_group_id = os.getenv('VK_GROUP_ID')
-    # get_comicbook(353)
+    comment_for_comicbook = get_comicbook(353)
+    comment_for_comicbook
     url_for_upload = get_upload_address(vk_token, vk_group_id)
     upload = upload_photo_to_server(url_for_upload, vk_group_id, 'Files/python.png', vk_token)
     upload
-    group_id, owner_id, media_id, message = f'-{vk_group_id}', upload['response'][0]['owner_id'], upload['response'][0]['id'], 'test2'
+    group_id, owner_id, media_id, message = f'-{vk_group_id}', upload['response'][0]['owner_id'], upload['response'][0]['id'], comment_for_comicbook
     print(wall_post(group_id, owner_id, media_id, message, vk_token))
 
 
