@@ -1,3 +1,4 @@
+import pathlib
 import random
 import requests
 import os
@@ -21,6 +22,13 @@ def get_comicbook(number_of_comics, folder='Files'):
     with open(f'{folder}/{filename}', 'wb') as file:  # writing the comics to directory
         file.write(response_comicbook.content)
     return {'comicbook_comment': comicbook_comment, 'filename': filename}
+
+
+def delete_comic_book(folder='Files'):
+    filelist = [f for f in os.listdir(folder)]
+    for f in filelist:
+        os.remove(os.path.join(folder, f))
+    return 'ok'
 
 
 def get_random_cb_number():
@@ -91,6 +99,7 @@ def main():
     vk_token = os.getenv('VK_USER_TOKEN')
     vk_group_id = os.getenv('VK_GROUP_ID')
     random_comicbook = get_comicbook(get_random_cb_number())
+
     url_for_upload = get_upload_address(vk_token, vk_group_id)
     upload = upload_photo_to_server(url_for_upload, vk_group_id, f'Files/{random_comicbook["filename"]}', vk_token)
     group_id = f'-{vk_group_id}'
