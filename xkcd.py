@@ -21,7 +21,8 @@ def save_comic_pic(download_url, folder):
     response.raise_for_status()
     comic_pic_title = urlsplit(download_url).path
     filename = os.path.basename(comic_pic_title)
-    with open(f'{folder}/{filename}', 'wb') as file:
+    filepath = Path.cwd() / folder / filename
+    with open(filepath, 'wb') as file:
         file.write(response.content)
     return filename
 
