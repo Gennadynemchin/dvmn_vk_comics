@@ -1,17 +1,7 @@
 import requests
 
 
-def vk_get_groups(access_token):  # get array with groups of user
-    url = f'https://api.vk.com/method/groups.get'
-    params = {'access_token': access_token,
-              'v': '5.131'}
-    response = requests.get(url, params=params)  # get json from xkcd.com
-    response.raise_for_status()
-    user_groups = response.json()
-    return user_groups
-
-
-def get_upload_address(access_token, group_id):  # get url for upload photo to server
+def get_upload_address(access_token, group_id):
     url = f'https://api.vk.com/method/photos.getWallUploadServer'
     params = {'access_token': access_token,
               'group_id': group_id,
