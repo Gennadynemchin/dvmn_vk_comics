@@ -12,8 +12,8 @@ def get_upload_address(access_token, group_id):
     return upload_address
 
 
-def upload_photo_to_server(url_for_upload, group_id, photo, access_token):
-    with open(photo, 'rb') as file:
+def upload_photo_to_server(url_for_upload, group_id, filepath, access_token):
+    with open(filepath, 'rb') as file:
         files = {'photo': file}
         response = requests.post(url_for_upload, files=files)
     response.raise_for_status()

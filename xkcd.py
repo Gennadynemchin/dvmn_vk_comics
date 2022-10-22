@@ -9,10 +9,10 @@ def get_comic_pic(number_of_comics):
     url = f'https://xkcd.com/{number_of_comics}/info.0.json'
     response = requests.get(url)
     response.raise_for_status()
-    url_to_download_comic_pic = response.json()['img']
+    url_comic_pic = response.json()['img']
     comic_pic_comment = response.json()['alt']
     return {'comic_pic_comment': comic_pic_comment,
-            'download_url': url_to_download_comic_pic}
+            'download_url': url_comic_pic}
 
 
 def save_comic_pic(download_url, folder):
