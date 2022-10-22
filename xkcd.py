@@ -9,18 +9,18 @@ def get_comic_pic(number_of_comics):
     url = f'https://xkcd.com/{number_of_comics}/info.0.json'
     response = requests.get(url)
     response.raise_for_status()
-    url_to_download_comicbook = response.json()['img']
-    comicbook_comment = response.json()['alt']
-    return {'comicbook_comment': comicbook_comment,
-            'download_url': url_to_download_comicbook}
+    url_to_download_comic_pic = response.json()['img']
+    comic_pic_comment = response.json()['alt']
+    return {'comic_pic_comment': comic_pic_comment,
+            'download_url': url_to_download_comic_pic}
 
 
 def save_comic_pic(download_url, folder):
     Path(folder).mkdir(parents=True, exist_ok=True)
     response = requests.get(download_url)
     response.raise_for_status()
-    comicbook_title = urlsplit(download_url).path
-    filename = os.path.basename(comicbook_title)
+    comic_pic_title = urlsplit(download_url).path
+    filename = os.path.basename(comic_pic_title)
     with open(f'{folder}/{filename}', 'wb') as file:
         file.write(response.content)
     return filename
