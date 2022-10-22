@@ -5,7 +5,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 
-def get_comicbook(number_of_comics):
+def get_comic_pic(number_of_comics):
     url = f'https://xkcd.com/{number_of_comics}/info.0.json'
     response = requests.get(url)
     response.raise_for_status()
@@ -15,7 +15,7 @@ def get_comicbook(number_of_comics):
             'download_url': url_to_download_comicbook}
 
 
-def save_comicbook(download_url, folder):
+def save_comic_pic(download_url, folder):
     Path(folder).mkdir(parents=True, exist_ok=True)
     response = requests.get(download_url)
     response.raise_for_status()
@@ -26,17 +26,17 @@ def save_comicbook(download_url, folder):
     return filename
 
 
-def delete_comic_book(folder):
+def delete_comic_pic(folder):
     filelist = [f for f in os.listdir(folder)]
     for f in filelist:
         os.remove(os.path.join(folder, f))
     return 'ok'
 
 
-def get_random_cb_number():
+def get_random_cp_number():
     url = 'https://xkcd.com/info.0.json'
     response = requests.get(url)
     response.raise_for_status()
-    max_cb_number = response.json()['num']
-    random_number = random.randint(1, max_cb_number)
+    max_cp_number = response.json()['num']
+    random_number = random.randint(1, max_cp_number)
     return random_number
