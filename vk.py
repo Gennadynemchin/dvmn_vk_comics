@@ -29,7 +29,9 @@ def upload_photo_to_server(url_for_upload, group_id, photo, access_token):
                                    'hash': hash_photo,
                                    'v': '5.131'})
     response.raise_for_status()
-    return response.json()
+    owner_id = response.json()['response'][0]['owner_id']
+    media_id = response.json()['response'][0]['id']
+    return {'owner_id': owner_id, 'media_id': media_id}
 
 
 def publish_wall_post(group_id, owner_id, media_id, message, access_token):

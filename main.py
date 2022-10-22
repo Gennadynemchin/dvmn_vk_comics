@@ -10,18 +10,18 @@ def main():
     vk_group_id = os.getenv('VK_GROUP_ID')
     folder = 'Files'
 
+    random_comic_pic = get_comic_pic(get_random_cp_number())
+    saved_comic_pic = save_comic_pic(random_comic_pic['download_url'], folder)
     try:
-        random_comic_pic = get_comic_pic(get_random_cp_number())
-        saved_comic_pic = save_comic_pic(random_comic_pic['download_url'], folder)
         url_for_upload = get_upload_address(vk_token, vk_group_id)
         upload = upload_photo_to_server(url_for_upload, vk_group_id, f'Files/{saved_comic_pic}', vk_token)
         group_id = f'-{vk_group_id}'
-        owner_id = upload['response'][0]['owner_id']
-        media_id = upload['response'][0]['id']
+        owner_id = upload['owner_id']
+        media_id = upload['media_id']
         message = random_comic_pic['comic_pic_comment']
         publish_wall_post(group_id, owner_id, media_id, message, vk_token)
     finally:
-        delete_comic_pic(folder)
+        delete_comic_pic(folder, saved_comic_pic)
 
 
 if __name__ == '__main__':

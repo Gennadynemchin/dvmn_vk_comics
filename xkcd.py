@@ -26,10 +26,8 @@ def save_comic_pic(download_url, folder):
     return filename
 
 
-def delete_comic_pic(folder):
-    filelist = [f for f in os.listdir(folder)]
-    for f in filelist:
-        os.remove(os.path.join(folder, f))
+def delete_comic_pic(folder, filename):
+    os.remove(os.path.join(folder, filename))
     return 'ok'
 
 
