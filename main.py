@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from xkcd import get_comic_pic, save_comic_pic, delete_comic_pic, get_random_cp_number
-from vk import get_upload_address, upload_photo_to_server, wall_post
+from vk import get_upload_address, upload_photo_to_server, publish_wall_post
 
 
 def main():
@@ -10,16 +10,18 @@ def main():
     vk_group_id = os.getenv('VK_GROUP_ID')
     folder = 'Files'
 
-    random_comic_pic = get_comic_pic(get_random_cp_number())
-    saved_comic_pic = save_comic_pic(random_comic_pic['download_url'], folder)
-    url_for_upload = get_upload_address(vk_token, vk_group_id)
-    upload = upload_photo_to_server(url_for_upload, vk_group_id, f'Files/{saved_comic_pic}', vk_token)
-    group_id = f'-{vk_group_id}'
-    owner_id = upload['response'][0]['owner_id']
-    media_id = upload['response'][0]['id']
-    message = random_comic_pic['comic_pic_comment']
-    wall_post(group_id, owner_id, media_id, message, vk_token)
-    delete_comic_pic(folder)
+    try:
+        random_comic_pic = get_comic_pic(get_random_cp_number())
+        saved_comic_pic = save_comic_pic(random_comic_pic['download_url'], folder)
+        url_for_upload = get_upload_address(vk_token, vk_group_id)
+        upload = upload_photo_to_server(url_for_upload, vk_group_id, f'Files/{saved_comic_pic}', vk_token)
+        group_id = f'-{vk_group_id}'
+        owner_id = upload['response'][0]['owner_id']
+        media_id = upload['response'][0]['id']
+        message = random_comic_pic['comic_pic_comment']
+        publish_wall_post(group_id, owner_id, media_id, message, vk_token)
+    finally:
+        delete_comic_pic(folder)
 
 
 if __name__ == '__main__':
