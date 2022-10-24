@@ -16,10 +16,8 @@ def main():
     filepath = Path.cwd() / folder / saved_comic_pic
     try:
         url_for_upload = get_upload_address(vk_token, vk_group_id)
-        photo_on_server = upload_photo_to_server(url_for_upload, vk_group_id, filepath, vk_token)
+        owner_id, media_id = upload_photo_to_server(url_for_upload, vk_group_id, filepath, vk_token)
         group_id = f'-{vk_group_id}'
-        owner_id = photo_on_server['owner_id']
-        media_id = photo_on_server['media_id']
         message = random_comic_pic['comic_pic_comment']
         publish_wall_post(group_id, owner_id, media_id, message, vk_token)
     finally:
