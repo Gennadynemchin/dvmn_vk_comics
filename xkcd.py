@@ -9,10 +9,9 @@ def get_comic_pic(number_of_comics):
     url = f'https://xkcd.com/{number_of_comics}/info.0.json'
     response = requests.get(url)
     response.raise_for_status()
-    url_comic_pic = response.json()['img']
+    comic_pic_url = response.json()['img']
     comic_pic_comment = response.json()['alt']
-    return {'comic_pic_comment': comic_pic_comment,
-            'download_url': url_comic_pic}
+    return comic_pic_comment, comic_pic_url
 
 
 def save_comic_pic(download_url, folder):
@@ -25,11 +24,6 @@ def save_comic_pic(download_url, folder):
     with open(filepath, 'wb') as file:
         file.write(response.content)
     return filename
-
-
-def delete_comic_pic(folder, filename):
-    os.remove(os.path.join(folder, filename))
-    return 'ok'
 
 
 def get_random_cp_number():

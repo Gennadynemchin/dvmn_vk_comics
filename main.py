@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from xkcd import get_comic_pic, save_comic_pic, delete_comic_pic, get_random_cp_number
+from xkcd import get_comic_pic, save_comic_pic, get_random_cp_number
 from vk import get_upload_address, upload_photo_to_server, publish_wall_post
 
 
@@ -11,8 +11,8 @@ def main():
     vk_group_id = os.getenv('VK_GROUP_ID')
     folder = 'Files'
 
-    random_comic_pic = get_comic_pic(get_random_cp_number())
-    saved_comic_pic = save_comic_pic(random_comic_pic['download_url'], folder)
+    random_comic_pic, download_url = get_comic_pic(get_random_cp_number())
+    saved_comic_pic = save_comic_pic(download_url, folder)
     filepath = Path.cwd() / folder / saved_comic_pic
     try:
         url_for_upload = get_upload_address(vk_token, vk_group_id)
@@ -23,7 +23,7 @@ def main():
         message = random_comic_pic['comic_pic_comment']
         publish_wall_post(group_id, owner_id, media_id, message, vk_token)
     finally:
-        delete_comic_pic(folder, saved_comic_pic)
+        os.remove(os.path.join(folder, saved_comic_pic))
 
 
 if __name__ == '__main__':

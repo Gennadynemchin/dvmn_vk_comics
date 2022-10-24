@@ -7,10 +7,10 @@ After that it posts on the https://vk.com wall of your community.
 
 You have to change some variables in .env:
 ```
-'VK_APP_CLIENT_ID'='YOUR_VK_APP_ID'
-'VK_USER_ID'='YOUR_USER_ID'
-'VK_GROUP_ID'='GROUP_ID_FOR_POSTING'
-'VK_USER_TOKEN'='YOUR_VK_TOKEN'
+VK_APP_CLIENT_ID=YOUR_VK_APP_ID
+VK_USER_ID=YOUR_USER_ID
+VK_GROUP_ID=GROUP_ID_FOR_POSTING
+VK_USER_TOKEN=YOUR_VK_TOKEN
 ```
 Please see how to get your vk app id here: https://dev.vk.com 
 
