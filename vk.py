@@ -17,10 +17,10 @@ def upload_photo_to_server(url_for_upload, group_id, filepath, access_token):
         files = {'photo': file}
         response = requests.post(url_for_upload, files=files)
     response.raise_for_status()
-    upload_to_server = response.json()
-    server = upload_to_server['server']
-    photo = upload_to_server['photo']
-    hash_photo = upload_to_server['hash']
+    response_vk_server = response.json()
+    server = response_vk_server['server']
+    photo = response_vk_server['photo']
+    hash_photo = response_vk_server['hash']
     url = 'https://api.vk.com/method/photos.saveWallPhoto'
     response = requests.post(url, {'access_token': access_token,
                                    'group_id': group_id,
@@ -29,8 +29,9 @@ def upload_photo_to_server(url_for_upload, group_id, filepath, access_token):
                                    'hash': hash_photo,
                                    'v': '5.131'})
     response.raise_for_status()
-    owner_id = response.json()['response'][0]['owner_id']
-    media_id = response.json()['response'][0]['id']
+    response_vk_group = response.json()
+    owner_id = response_vk_group['response'][0]['owner_id']
+    media_id = response_vk_group['response'][0]['id']
     return owner_id, media_id
 
 
