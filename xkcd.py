@@ -9,8 +9,9 @@ def get_comic_pic(number_of_comics):
     url = f'https://xkcd.com/{number_of_comics}/info.0.json'
     response = requests.get(url)
     response.raise_for_status()
-    comic_pic_url = response.json()['img']
-    comic_pic_comment = response.json()['alt']
+    response_xkcd = response.json()
+    comic_pic_url = response_xkcd['img']
+    comic_pic_comment = response_xkcd['alt']
     return comic_pic_comment, comic_pic_url
 
 
