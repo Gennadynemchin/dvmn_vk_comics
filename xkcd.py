@@ -15,8 +15,7 @@ def get_comic_pic(number_of_comics):
     return comic_pic_comment, comic_pic_url
 
 
-def save_comic_pic(download_url, folder):
-    Path(folder).mkdir(parents=True, exist_ok=True)
+def download_comic_pic(download_url, folder):
     response = requests.get(download_url)
     response.raise_for_status()
     comic_pic_title = urlsplit(download_url).path
