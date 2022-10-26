@@ -18,8 +18,7 @@ def main():
         Path(folder).mkdir(parents=True, exist_ok=True)
         url_for_upload = get_upload_address(vk_token, vk_group_id)
         owner_id, media_id = upload_photo_to_server(url_for_upload, vk_group_id, filepath, vk_token)
-        group_id = f'-{vk_group_id}'
-        publish_wall_post(group_id, owner_id, media_id, random_comic_pic, vk_token)
+        publish_wall_post(vk_group_id, owner_id, media_id, random_comic_pic, vk_token)
     finally:
         os.remove(os.path.join(folder, saved_comic_pic))
 
