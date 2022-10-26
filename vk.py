@@ -37,6 +37,7 @@ def upload_photo_to_server(url_for_upload, group_id, filepath, access_token):
 
 def publish_wall_post(group_id, owner_id, media_id, message, access_token):
     attachments = f'photo{owner_id}_{media_id}'
+    group_id = f'-{group_id}'
     url = 'https://api.vk.com/method/wall.post'
     response = requests.post(url, {'from_group': 1,
                                    'owner_id': group_id,
