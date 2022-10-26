@@ -12,7 +12,8 @@ VK_USER_ID=YOUR_USER_ID
 VK_GROUP_ID=GROUP_ID_FOR_POSTING
 VK_USER_TOKEN=YOUR_VK_TOKEN
 ```
-Please see how to get your vk app id here: https://dev.vk.com 
+Please see how to get your vk app id here: https://dev.vk.com. You have to open this page, then click on "Create app" button.
+Enter your app name, platform and url (if needed). Save it. After that click on "Settings" on the left side and copy your APP id.
 
 As far as the https://vk.com doesn't allow to get vk token by API request
 (at least officially) you have to sign in to https://vk.com,
